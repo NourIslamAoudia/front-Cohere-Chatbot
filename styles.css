@@ -33,7 +33,7 @@ body {
 .chat-header {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Espace entre les éléments */
     padding: 15px;
     background-color: #007bff;
     border-bottom: 1px solid #333;
@@ -50,6 +50,25 @@ body {
     font-size: 28px; /* Taille de l'icône */
     margin-right: 10px;
     color: white; /* Couleur de l'icône */
+}
+
+/* Style du bouton "Start New Chat" */
+#new-chat-btn {
+    padding: 8px 16px;
+    background-color: #d2d2d2; /* Couleur verte */
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#new-chat-btn:hover {
+    background-color: #ffffffbb; /* Couleur verte plus foncée au survol */
 }
 
 /* ==================== */
@@ -208,5 +227,17 @@ button#stop-btn:hover {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .chat-header h1 {
+        font-size: 20px;
+    }
+
+    .chat-header .chat-icon {
+        font-size: 24px; /* Taille de l'icône réduite pour mobile */
+    }
+
+    #new-chat-btn {
+        padding: 6px 12px;
+        font-size: 12px;
     }
 }

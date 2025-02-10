@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cohere Chatbot</title>
+    <title>Islam ChatBot</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Ajout de FontAwesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="chat-bot.png">
 </head>
 <body>
     <div class="chat-container">
-        <!-- Titre et icône -->
+        <!-- Titre, icône et bouton "Start New Chat" -->
         <div class="chat-header">
             <i class="fas fa-robot chat-icon"></i> <!-- Icône de robot -->
             <h1>Islam ChatBot</h1>
+            <button id="new-chat-btn" onclick="startNewChat()">
+                <i class="fas fa-plus"></i>New Chat
+            </button>
         </div>
 
         <!-- Zone de conversation -->

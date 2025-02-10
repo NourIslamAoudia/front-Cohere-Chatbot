@@ -65,7 +65,7 @@ async function sendMessage() {
                 document.getElementById('stop-btn').classList.add('hidden');
                 document.getElementById('send-btn').disabled = false;
             }
-        }, 40); // Délai entre chaque mot (50ms)
+        }, 50); // Délai entre chaque mot (50ms)
 
     } catch (error) {
         console.error('Erreur:', error);
@@ -89,6 +89,16 @@ function stopGeneration() {
             loadingDiv.remove();
         }
     }
+}
+
+// Fonction pour démarrer une nouvelle conversation
+function startNewChat() {
+    const messagesContainer = document.getElementById('chat-messages');
+    messagesContainer.innerHTML = ''; // Vider la zone de messages
+    isGenerating = false; // Réinitialiser l'état de génération
+    clearInterval(intervalId); // Arrêter toute génération en cours
+    document.getElementById('stop-btn').classList.add('hidden'); // Cacher le bouton "Stop"
+    document.getElementById('send-btn').disabled = false; // Réactiver le bouton "Envoyer"
 }
 
 // Ajouter un écouteur d'événement pour la touche "Entrer"
