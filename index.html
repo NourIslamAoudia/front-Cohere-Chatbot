@@ -5,18 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cohere Chatbot</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Ajout d'une icône pour le bouton Stop et l'animation de chargement -->
+    <!-- Ajout de FontAwesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="chat-bot.png">
+    <link rel="icon" type="image/png" href="chat-bot.png">
 </head>
 <body>
     <div class="chat-container">
+        <!-- Titre et icône -->
+        <div class="chat-header">
+            <i class="fas fa-robot chat-icon"></i> <!-- Icône de robot -->
+            <h1>Islam ChatBot</h1>
+        </div>
+
+        <!-- Zone de conversation -->
         <div id="chat-messages" class="chat-messages"></div>
+
+        <!-- Zone de saisie -->
         <div class="chat-input">
             <input type="text" id="message-input" placeholder="Écrivez votre message...">
             <button id="send-btn" onclick="sendMessage()">Envoyer</button>
             <button id="stop-btn" class="hidden" onclick="stopGeneration()">
-                <i class="fas fa-stop"></i> Stop
+                <i class="fas fa-stop"></i>
             </button>
         </div>
     </div>

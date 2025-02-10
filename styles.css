@@ -28,6 +28,31 @@ body {
 }
 
 /* ==================== */
+/* Chat Header          */
+/* ==================== */
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background-color: #007bff;
+    border-bottom: 1px solid #333;
+}
+
+.chat-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.chat-header .chat-icon {
+    font-size: 28px; /* Taille de l'icône */
+    margin-right: 10px;
+    color: white; /* Couleur de l'icône */
+}
+
+/* ==================== */
 /* Chat Messages        */
 /* ==================== */
 .chat-messages {
@@ -80,7 +105,7 @@ body {
     border-radius: 8px;
     background-color: #333;
     color: #e0e0e0;
-    font-size: 14px;
+    font-size: 16px; /* Taille de police minimale recommandée pour éviter le zoom sur iOS */
 }
 
 /* ==================== */
@@ -137,10 +162,6 @@ button#stop-btn:hover {
     }
 }
 
-#message-input {
-    font-size: 16px; /* Taille de police minimale recommandée pour éviter le zoom sur iOS */
-}
-
 /* ==================== */
 /* Responsive Design    */
 /* ==================== */
@@ -152,12 +173,20 @@ button#stop-btn:hover {
     }
 
     .chat-messages {
-        height: calc(100vh - 120px);
+        height: calc(100vh - 150px);
+    }
+
+    .chat-header h1 {
+        font-size: 20px;
+    }
+
+    .chat-header .chat-icon {
+        font-size: 24px; /* Taille de l'icône réduite pour mobile */
     }
 
     .chat-input {
-        flex-direction: row; /* Garder la disposition en ligne pour les boutons */
-        gap: 5px; /* Espace entre les boutons */
+        flex-direction: row;
+        gap: 5px;
     }
 
     #message-input {
@@ -166,16 +195,14 @@ button#stop-btn:hover {
     }
 
     button {
-        width: auto; /* Réinitialiser la largeur à auto */
+        width: auto;
         height: 38px;
     }
 
-    /* Style spécifique pour le bouton "Envoyer" */
     button#send-btn {
-        flex-grow: 7; /* 70% de la largeur */
+        flex-grow: 6; /* 70% de la largeur */
     }
 
-    /* Style spécifique pour le bouton "Stop" */
     button#stop-btn {
         flex-grow: 2.5; /* 25% de la largeur */
         display: flex;
