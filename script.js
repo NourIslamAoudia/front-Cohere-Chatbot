@@ -11,100 +11,103 @@ async function sendMessage() {
     if (!message) return;
 
     // Afficher le message de l'utilisateur
-    messagesContainer.innerHTML += `
-        <div class="message user-message">
-            <strong>Vous:</strong> ${message}
-        </div>
-    `;
+    const userMessageDiv = document.createElement('div');
+    userMessageDiv.classList.add('message', 'user-message');
+    userMessageDiv.innerHTML = `<strong>Vous:</strong> ${message}`;
+    messagesContainer.appendChild(userMessageDiv);
 
     input.value = ''; // Réinitialiser l'input
-    messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll automatique
+    scrollToBottom();
 
-    // Activer le bouton "Stop" et désactiver le bouton "Envoyer"
-    document.getElementById('stop-btn').classList.remove('hidden');
-    document.getElementById('send-btn').disabled = true;
-    isGenerating = true;
+    // Désactiver le bouton "Envoyer" et afficher "Stop"
+    toggleButtons(true);
 
     // Ajouter une animation de chargement
     const loadingDiv = document.createElement('div');
     loadingDiv.classList.add('message', 'ai-message', 'loading');
-    loadingDiv.innerHTML = `<strong>IA:</strong> <span class="ai-text"><i class="fas fa-spinner fa-spin"></i> Génération en cours...</span>`;
+    loadingDiv.innerHTML = `<strong>IA:</strong> <span class="ai-text"><i class="fas fa-spinner fa-spin"></i> Génération...</span>`;
     messagesContainer.appendChild(loadingDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll automatique
+    scrollToBottom();
 
     try {
         const response = await fetch('https://cohere-chatbot.vercel.app/chat', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message })
         });
 
         const data = await response.json();
-        const aiResponse = data.reply;
+        const aiResponse = data.reply || "Désolé, je n'ai pas pu comprendre votre demande.";
 
         // Supprimer l'animation de chargement
         loadingDiv.remove();
 
-        // Afficher la réponse de l'IA mot par mot
-        const aiMessageDiv = document.createElement('div');
-        aiMessageDiv.classList.add('message', 'ai-message');
-        aiMessageDiv.innerHTML = `<strong>IA:</strong> <span class="ai-text"></span>`;
-        messagesContainer.appendChild(aiMessageDiv);
-
-        let index = 0;
-        intervalId = setInterval(() => {
-            if (index < aiResponse.length) {
-                aiMessageDiv.querySelector('.ai-text').textContent += aiResponse[index];
-                index++;
-                messagesContainer.scrollTop = messagesContainer.scrollHeight; // Scroll automatique
-            } else {
-                clearInterval(intervalId);
-                isGenerating = false;
-                document.getElementById('stop-btn').classList.add('hidden');
-                document.getElementById('send-btn').disabled = false;
-            }
-        }, 40); // Délai entre chaque mot (50ms)
-
+        // Afficher la réponse de l'IA lettre par lettre
+        displayAIMessage(aiResponse);
     } catch (error) {
         console.error('Erreur:', error);
-        isGenerating = false;
-        document.getElementById('stop-btn').classList.add('hidden');
-        document.getElementById('send-btn').disabled = false;
         loadingDiv.remove(); // Supprimer l'animation de chargement en cas d'erreur
+        toggleButtons(false);
     }
 }
 
+// Fonction pour afficher le message IA de manière progressive
+function displayAIMessage(aiResponse) {
+    const messagesContainer = document.getElementById('chat-messages');
+    const aiMessageDiv = document.createElement('div');
+    aiMessageDiv.classList.add('message', 'ai-message');
+    aiMessageDiv.innerHTML = `<strong>IA:</strong> <span class="ai-text"></span>`;
+    messagesContainer.appendChild(aiMessageDiv);
+    scrollToBottom();
+
+    let index = 0;
+    intervalId = setInterval(() => {
+        if (index < aiResponse.length) {
+            aiMessageDiv.querySelector('.ai-text').textContent += aiResponse[index];
+            index++;
+            scrollToBottom();
+        } else {
+            clearInterval(intervalId);
+            toggleButtons(false);
+        }
+    }, getTypingSpeed(aiResponse.length));
+}
+
+// Fonction pour adapter la vitesse d'affichage selon la longueur du message
+function getTypingSpeed(length) {
+    return length > 100 ? 20 : 40; // Plus le message est long, plus il s'affiche rapidement
+}
+
+// Fonction pour arrêter la génération du texte
 function stopGeneration() {
     if (intervalId) {
         clearInterval(intervalId);
-        isGenerating = false;
-        document.getElementById('stop-btn').classList.add('hidden');
-        document.getElementById('send-btn').disabled = false;
-
-        // Supprimer l'animation de chargement si elle est active
-        const loadingDiv = document.querySelector('.loading');
-        if (loadingDiv) {
-            loadingDiv.remove();
-        }
+        toggleButtons(false);
     }
 }
 
-// Fonction pour démarrer une nouvelle conversation
+// Fonction pour vider la conversation et réinitialiser l'état
 function startNewChat() {
-    const messagesContainer = document.getElementById('chat-messages');
-    messagesContainer.innerHTML = ''; // Vider la zone de messages
-    isGenerating = false; // Réinitialiser l'état de génération
-    clearInterval(intervalId); // Arrêter toute génération en cours
-    document.getElementById('stop-btn').classList.add('hidden'); // Cacher le bouton "Stop"
-    document.getElementById('send-btn').disabled = false; // Réactiver le bouton "Envoyer"
+    document.getElementById('chat-messages').innerHTML = '';
+    stopGeneration();
 }
 
-// Ajouter un écouteur d'événement pour la touche "Entrer"
+// Fonction pour gérer l'affichage des boutons
+function toggleButtons(isDisabled) {
+    document.getElementById('send-btn').disabled = isDisabled;
+    document.getElementById('stop-btn').classList.toggle('hidden', !isDisabled);
+}
+
+// Fonction pour scroller automatiquement en bas
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('chat-messages');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// Écouteur d'événement pour envoyer un message en appuyant sur "Enter"
 document.getElementById('message-input').addEventListener('keypress', function (event) {
     if (event.key === 'Enter') {
-        event.preventDefault(); // Empêcher le comportement par défaut (comme soumettre un formulaire)
-        sendMessage(); // Appeler la fonction sendMessage
+        event.preventDefault();
+        sendMessage();
     }
 });
