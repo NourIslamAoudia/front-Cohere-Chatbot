@@ -219,7 +219,7 @@ button#stop-btn:hover {
     }
 
     button#send-btn {
-        flex-grow: 6; /* 70% de la largeur */
+        flex-grow: 5; /* 70% de la largeur */
     }
 
     button#stop-btn {
