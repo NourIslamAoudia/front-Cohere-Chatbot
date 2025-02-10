@@ -65,7 +65,7 @@ async function sendMessage() {
                 document.getElementById('stop-btn').classList.add('hidden');
                 document.getElementById('send-btn').disabled = false;
             }
-        }, 50); // Délai entre chaque mot (50ms)
+        }, 40); // Délai entre chaque mot (50ms)
 
     } catch (error) {
         console.error('Erreur:', error);
@@ -90,3 +90,11 @@ function stopGeneration() {
         }
     }
 }
+
+// Ajouter un écouteur d'événement pour la touche "Entrer"
+document.getElementById('message-input').addEventListener('keypress', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Empêcher le comportement par défaut (comme soumettre un formulaire)
+        sendMessage(); // Appeler la fonction sendMessage
+    }
+});
