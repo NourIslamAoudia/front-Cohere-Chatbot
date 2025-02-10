@@ -65,7 +65,7 @@ async function sendMessage() {
                 document.getElementById('stop-btn').classList.add('hidden');
                 document.getElementById('send-btn').disabled = false;
             }
-        }, 50); // Délai entre chaque mot (50ms)
+        }, 40); // Délai entre chaque mot (50ms)
 
     } catch (error) {
         console.error('Erreur:', error);
